@@ -355,7 +355,7 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
 
 - (void)keyPressed:(SilKeyButton *)sender {
     unichar keyCode = sender.keyCode;
-    
+
     // Apply control modifier
     if (_controlActive && keyCode >= 'a' && keyCode <= 'z') {
         keyCode = keyCode - 'a' + 1; // Convert to control character
@@ -365,7 +365,9 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     if (_shiftActive) modifiers |= UIKeyModifierShift;
     if (_controlActive) modifiers |= UIKeyModifierControl;
     
-    [self.delegate keyboardView:self didPressKey:keyCode modifiers:modifiers];
+    if (self.delegate) {
+        [self.delegate keyboardView:self didPressKey:keyCode modifiers:modifiers];
+    }
     
     // Reset modifiers after key press (except for sticky mode)
     if (!sender.isModifier) {
@@ -387,20 +389,8 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
 }
 
 - (void)modePressed:(UIButton *)sender {
-    NSString *title = sender.titleLabel.text;
-    
-    if ([title isEqualToString:@"123"]) {
-        self.mode = SilKeyboardModeNumeric;
-    } else if ([title isEqualToString:@"ABC"]) {
-        self.mode = SilKeyboardModeAlpha;
-    } else if ([title isEqualToString:@"Move"]) {
-        self.mode = SilKeyboardModeMovement;
-    } else if ([title isEqualToString:@"Cmd"]) {
-        self.mode = SilKeyboardModeCommand;
-    } else {
-        // Cycle through modes
-        self.mode = (self.mode + 1) % 4;
-    }
+    // Always cycle through modes so you can always get back to movement/arrows.
+    self.mode = (self.mode + 1) % 4;
 }
 
 - (void)setMode:(SilKeyboardMode)mode {

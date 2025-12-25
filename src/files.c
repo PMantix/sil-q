@@ -3119,6 +3119,25 @@ bool get_name(void)
     char old_name[14];
     bool name_selected = FALSE;
 
+    int term_wid = 80;
+    int term_hgt = 24;
+    int row1 = INSTRUCT_ROW + 1;
+    int row2 = INSTRUCT_ROW + 2;
+
+    Term_get_size(&term_wid, &term_hgt);
+    if (term_hgt > 0)
+    {
+        int max_row = term_hgt - 1;
+        int overflow = row2 - max_row;
+        if (overflow > 0)
+        {
+            row1 -= overflow;
+            row2 -= overflow;
+        }
+        if (row1 < 0) row1 = 0;
+        if (row2 < 0) row2 = 0;
+    }
+
     // Clear the names
     tmp[0] = '\0';
     old_name[0] = '\0';
@@ -3127,24 +3146,30 @@ bool get_name(void)
     display_player(0);
 
     /* Prompt */
-    Term_putstr(
-        QUESTION_COL, INSTRUCT_ROW + 1, -1, TERM_SLATE, "Enter accept name");
-    Term_putstr(
-        QUESTION_COL, INSTRUCT_ROW + 2, -1, TERM_SLATE, "  Tab random name");
+    Term_putstr(QUESTION_COL, row1, -1, TERM_SLATE, "Enter accept name");
+#ifdef USE_IOS
+    Term_putstr(QUESTION_COL, row2, -1, TERM_SLATE, "    * random name");
+#else
+    Term_putstr(QUESTION_COL, row2, -1, TERM_SLATE, "  Tab random name");
+#endif
 
     /* Hack - highlight the key names */
-    Term_putstr(QUESTION_COL, INSTRUCT_ROW + 1, -1, TERM_L_WHITE, "Enter");
-    Term_putstr(QUESTION_COL + 2, INSTRUCT_ROW + 2, -1, TERM_L_WHITE, "Tab");
+    Term_putstr(QUESTION_COL, row1, -1, TERM_L_WHITE, "Enter");
+#ifdef USE_IOS
+    Term_putstr(QUESTION_COL + 4, row2, -1, TERM_L_WHITE, "*");
+#else
+    Term_putstr(QUESTION_COL + 2, row2, -1, TERM_L_WHITE, "Tab");
+#endif
 
     /* Special Prompt? */
     if (character_dungeon)
     {
-        Term_putstr(QUESTION_COL + 38 + 2, INSTRUCT_ROW + 1, -1, TERM_SLATE,
+        Term_putstr(QUESTION_COL + 38 + 2, row1, -1, TERM_SLATE,
             "ESC abort name change                  ");
 
         /* Hack - highlight the key names */
         Term_putstr(
-            QUESTION_COL + 38 + 2, INSTRUCT_ROW + 1, -1, TERM_L_WHITE, "ESC");
+            QUESTION_COL + 38 + 2, row1, -1, TERM_L_WHITE, "ESC");
     }
 
     // use old name as a default

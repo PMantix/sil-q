@@ -18,10 +18,13 @@
 
 #import "SilViewController.h"
 
+// Import the Term_keypress function from z-term
+extern void Term_keypress(int k);
+
 // Singleton instance
 static SilViewController *_sharedController = nil;
 
-// Key queue for the game
+// Key queue for the game (backup, but we mainly use Term_keypress now)
 #define KEY_QUEUE_SIZE 256
 static unichar _keyQueue[KEY_QUEUE_SIZE];
 static int _keyQueueHead = 0;
@@ -47,6 +50,10 @@ static const unichar kMovementKeyMap[9] = {
     UILongPressGestureRecognizer *_longPressGesture;
     
     NSLayoutConstraint *_keyboardBottomConstraint;
+    NSLayoutConstraint *_noKeyboardConstraint;
+    NSLayoutConstraint *_keyboardHeightConstraint;
+    UIButton *_keyboardToggleButton;
+    BOOL _didSetInitialZoom;
     BOOL _gameRunning;
 }
 
@@ -82,8 +89,28 @@ static const unichar kMovementKeyMap[9] = {
     [self setupScrollView];
     [self setupTerminalView];
     [self setupKeyboardView];
+    [self setupKeyboardToggleButton];
     [self setupGestures];
     [self setupNotifications];
+}
+
+- (void)setupKeyboardToggleButton {
+    _keyboardToggleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    _keyboardToggleButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_keyboardToggleButton setTitle:@"KB" forState:UIControlStateNormal];
+    _keyboardToggleButton.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.8];
+    [_keyboardToggleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _keyboardToggleButton.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightSemibold];
+    _keyboardToggleButton.layer.cornerRadius = 8;
+    _keyboardToggleButton.contentEdgeInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+    [_keyboardToggleButton addTarget:self action:@selector(toggleKeyboard) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_keyboardToggleButton];
+
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    [NSLayoutConstraint activateConstraints:@[
+        [_keyboardToggleButton.trailingAnchor constraintEqualToAnchor:safe.trailingAnchor constant:-12],
+        [_keyboardToggleButton.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-12],
+    ]];
 }
 
 - (void)setupScrollView {
@@ -118,13 +145,34 @@ static const unichar kMovementKeyMap[9] = {
 - (void)setupTerminalView {
     _terminalView = [[SilTerminalView alloc] initWithCols:80 rows:24];
     _terminalView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // Calculate optimal font size to fill the screen width in landscape
+    CGFloat screenWidth = MAX(UIScreen.mainScreen.bounds.size.width, 
+                               UIScreen.mainScreen.bounds.size.height);
+    CGFloat screenHeight = MIN(UIScreen.mainScreen.bounds.size.width, 
+                                UIScreen.mainScreen.bounds.size.height);
+    
+    // Leave some margin and account for safe areas
+    CGFloat availableWidth = screenWidth - 40;
+    CGFloat availableHeight = screenHeight - 60; // Room for keyboard toggle
+    
+    // Calculate font size based on fitting 80 columns
+    CGFloat fontSizeForWidth = availableWidth / 80.0 * 1.7; // Approximate width factor
+    CGFloat fontSizeForHeight = availableHeight / 24.0 * 0.9; // Approximate height factor
+    CGFloat optimalFontSize = MIN(fontSizeForWidth, fontSizeForHeight);
+    optimalFontSize = MAX(10.0, MIN(optimalFontSize, 24.0)); // Clamp between 10-24pt
+    
+    UIFont *scaledFont = [UIFont fontWithName:@"Menlo-Regular" size:optimalFontSize];
+    if (!scaledFont) {
+        scaledFont = [UIFont monospacedSystemFontOfSize:optimalFontSize weight:UIFontWeightRegular];
+    }
+    _terminalView.terminalFont = scaledFont;
+    
     [_containerView addSubview:_terminalView];
     
     [NSLayoutConstraint activateConstraints:@[
         [_terminalView.topAnchor constraintEqualToAnchor:_containerView.topAnchor],
         [_terminalView.leadingAnchor constraintEqualToAnchor:_containerView.leadingAnchor],
-        [_terminalView.trailingAnchor constraintEqualToAnchor:_containerView.trailingAnchor],
-        [_terminalView.bottomAnchor constraintEqualToAnchor:_containerView.bottomAnchor],
         [_terminalView.widthAnchor constraintEqualToConstant:_terminalView.cellWidth * 80],
         [_terminalView.heightAnchor constraintEqualToConstant:_terminalView.cellHeight * 24],
     ]];
@@ -139,20 +187,19 @@ static const unichar kMovementKeyMap[9] = {
     [self.view addSubview:_keyboardView];
     
     _keyboardBottomConstraint = [_scrollView.bottomAnchor constraintEqualToAnchor:_keyboardView.topAnchor];
+    _keyboardBottomConstraint.active = NO;
+    _noKeyboardConstraint = [_scrollView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
+    _noKeyboardConstraint.priority = UILayoutPriorityRequired;
+    _noKeyboardConstraint.active = YES;
     
     [NSLayoutConstraint activateConstraints:@[
-        _keyboardBottomConstraint,
         [_keyboardView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
         [_keyboardView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
         [_keyboardView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-        [_keyboardView.heightAnchor constraintEqualToConstant:220],
     ]];
-    
-    // Alternative constraint when keyboard is hidden
-    NSLayoutConstraint *noKeyboardConstraint = [_scrollView.bottomAnchor 
-        constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor];
-    noKeyboardConstraint.priority = UILayoutPriorityDefaultHigh;
-    noKeyboardConstraint.active = YES;
+
+    _keyboardHeightConstraint = [_keyboardView.heightAnchor constraintEqualToConstant:0];
+    _keyboardHeightConstraint.active = YES;
 }
 
 - (void)setupGestures {
@@ -165,7 +212,8 @@ static const unichar kMovementKeyMap[9] = {
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] 
         initWithTarget:self action:@selector(handleDoubleTap:)];
     doubleTap.numberOfTapsRequired = 2;
-    [_terminalView addGestureRecognizer:doubleTap];
+    // Attach to the full view so it still works when the terminal doesn't fill the screen
+    [self.view addGestureRecognizer:doubleTap];
     [_tapGesture requireGestureRecognizerToFail:doubleTap];
     
     // Swipe up to show keyboard
@@ -210,15 +258,34 @@ static const unichar kMovementKeyMap[9] = {
     
     // Update scroll view content size
     _scrollView.contentSize = _terminalView.intrinsicContentSize;
-    
-    // Center content if smaller than scroll view
+
+    // Auto-fit content to the available area once (and when size changes)
     CGSize contentSize = _terminalView.intrinsicContentSize;
     CGSize scrollSize = _scrollView.bounds.size;
+    if (contentSize.width > 0 && contentSize.height > 0 && scrollSize.width > 0 && scrollSize.height > 0) {
+        CGFloat scaleX = scrollSize.width / contentSize.width;
+        CGFloat scaleY = scrollSize.height / contentSize.height;
+        CGFloat fitScale = MIN(scaleX, scaleY);
+        fitScale = MAX(_scrollView.minimumZoomScale, MIN(fitScale, _scrollView.maximumZoomScale));
+
+        if (!_didSetInitialZoom || fabs(_scrollView.zoomScale - fitScale) > 0.25) {
+            _scrollView.zoomScale = fitScale;
+            _didSetInitialZoom = YES;
+        }
+
+        CGSize scaledSize = CGSizeMake(contentSize.width * _scrollView.zoomScale, contentSize.height * _scrollView.zoomScale);
+        CGFloat offsetX = MAX(0, (scrollSize.width - scaledSize.width) / 2);
+        CGFloat offsetY = MAX(0, (scrollSize.height - scaledSize.height) / 2);
+        _scrollView.contentInset = UIEdgeInsetsMake(offsetY, offsetX, offsetY, offsetX);
+        return;
+    }
     
-    CGFloat offsetX = MAX(0, (scrollSize.width - contentSize.width) / 2);
-    CGFloat offsetY = MAX(0, (scrollSize.height - contentSize.height) / 2);
-    
-    _scrollView.contentInset = UIEdgeInsetsMake(offsetY, offsetX, offsetY, offsetX);
+    // Center content if smaller than scroll view
+    CGSize fallbackContentSize = _terminalView.intrinsicContentSize;
+    CGSize fallbackScrollSize = _scrollView.bounds.size;
+    CGFloat fallbackOffsetX = MAX(0, (fallbackScrollSize.width - fallbackContentSize.width) / 2);
+    CGFloat fallbackOffsetY = MAX(0, (fallbackScrollSize.height - fallbackContentSize.height) / 2);
+    _scrollView.contentInset = UIEdgeInsetsMake(fallbackOffsetY, fallbackOffsetX, fallbackOffsetY, fallbackOffsetX);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -316,6 +383,14 @@ static const unichar kMovementKeyMap[9] = {
 }
 
 - (void)setKeyboardVisible:(BOOL)show animated:(BOOL)animated {
+    // Keep the toggle button out of the way when the keyboard is visible.
+    _keyboardToggleButton.hidden = show;
+
+    // When hidden, collapse keyboard height and let the scroll view use the full screen.
+    _keyboardBottomConstraint.active = show;
+    _noKeyboardConstraint.active = !show;
+    _keyboardHeightConstraint.constant = show ? 220 : 0;
+
     if (show) {
         [_keyboardView showAnimated:animated];
     } else {
@@ -360,7 +435,10 @@ static const unichar kMovementKeyMap[9] = {
         }
     }
     
-    // Add to queue
+    // Push the key directly into the Term's key queue
+    Term_keypress((int)finalKey);
+    
+    // Also keep in our local queue as backup
     int nextTail = (_keyQueueTail + 1) % KEY_QUEUE_SIZE;
     if (nextTail != _keyQueueHead) {
         _keyQueue[_keyQueueTail] = finalKey;

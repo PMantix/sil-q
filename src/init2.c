@@ -1625,6 +1625,11 @@ void init_angband(void)
 
     display_introduction();
 
+#ifdef USE_IOS
+    /* Give time to read the intro on iOS (loading is fast). */
+    Term_xtra(TERM_XTRA_DELAY, 30000);
+#endif
+
     /*** Verify (or create) the "high score" file ***/
 
     /* Build the filename */

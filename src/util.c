@@ -3572,6 +3572,9 @@ bool askfor_name(char* buf, size_t len)
         }
 
         case '\t':
+    #ifdef USE_IOS
+        case '*':
+    #endif
         {
             /*get the random name, display for approval. */
             make_random_name(buf, len);
