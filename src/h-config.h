@@ -21,6 +21,13 @@
 #endif
 
 /*
+ * OPTION: Compile on iOS (iPhone/iPad)
+ */
+#ifndef USE_IOS
+/* #define USE_IOS */
+#endif
+
+/*
  * OPTION: Compile on a Windows machine
  */
 #ifndef WINDOWS
@@ -186,7 +193,7 @@
 
 #if !defined(MACINTOSH) && !defined(WINDOWS) && !defined(MSDOS)                \
     && !defined(USE_EMX) && !defined(AMIGA) && !defined(RISCOS)                \
-    && !defined(VM)
+    && !defined(VM) && !defined(USE_IOS)
 #define SET_UID
 #endif
 
