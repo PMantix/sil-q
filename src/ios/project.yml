@@ -1,28 +1,3 @@
-#!/bin/bash
-#
-# generate-ios-project.sh
-# Creates an Xcode project for Sil-Q iOS using xcodegen
-#
-# Prerequisites:
-#   brew install xcodegen
-#
-# Usage:
-#   cd sil-q
-#   ./src/ios/generate-ios-project.sh
-#
-
-set -e
-
-echo "Generating Sil-Q iOS Xcode project..."
-
-# Check for xcodegen
-if ! command -v xcodegen &> /dev/null; then
-    echo "XcodeGen not found. Installing via Homebrew..."
-    brew install xcodegen
-fi
-
-# Create project.yml for xcodegen
-cat > src/ios/project.yml << 'EOF'
 name: Sil-Q-iOS
 options:
   bundleIdPrefix: com.silq
@@ -152,17 +127,3 @@ targets:
       TARGETED_DEVICE_FAMILY: "1,2"  # iPhone and iPad
       IPHONEOS_DEPLOYMENT_TARGET: "18.0"
       ENABLE_BITCODE: NO
-EOF
-
-# Generate the project
-cd src/ios
-xcodegen generate
-
-echo ""
-echo "✅ Xcode project generated: src/ios/Sil-Q-iOS.xcodeproj"
-echo ""
-echo "Next steps:"
-echo "1. Open Sil-Q-iOS.xcodeproj in Xcode"
-echo "2. Select your development team in Signing & Capabilities"
-echo "3. Build and run on your device"
-echo ""

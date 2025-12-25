@@ -30,6 +30,20 @@
 # define SIL_CREATOR 'SilI'
 #endif
 
+/* 
+ * Stub implementations for macOS Carbon file type functions.
+ * These don't do anything on iOS but are needed for linking.
+ */
+u32b _fcreator = 0;
+u32b _ftype = 0;
+
+void fsetfileinfo(cptr path, u32b fcreator, u32b ftype) {
+    /* No-op on iOS - file type/creator codes are a legacy macOS feature */
+    (void)path;
+    (void)fcreator;
+    (void)ftype;
+}
+
 /* Forward declarations */
 static void Term_init_ios(term *t);
 static void Term_nuke_ios(term *t);
@@ -91,20 +105,9 @@ static NSString *get_lib_directory(void) {
 /**
  * Initialize file paths for the game
  */
-static void init_file_paths(void) {
+static void init_ios_file_paths(void) {
     NSString *libPath = get_lib_directory();
     NSString *appSupportPath = get_app_support_directory();
-    
-    // Convert paths to C strings
-    const char *lib = [libPath fileSystemRepresentation];
-    const char *user = [[appSupportPath stringByAppendingPathComponent:@"user"] 
-                        fileSystemRepresentation];
-    const char *save = [[appSupportPath stringByAppendingPathComponent:@"save"] 
-                        fileSystemRepresentation];
-    
-    // Set up the data path (read-only, in bundle)
-    // The init_file_paths function in init2.c will handle setting up all paths
-    // We just need to set ANGBAND_DIR
     
     // Create user and save directories in app support
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -123,13 +126,24 @@ static void init_file_paths(void) {
         }
     }
     
-    // Set the lib path - using app support so it's writable
-    char *path = strdup([[appSupportPath stringByAppendingPathComponent:@"lib"] 
-                         fileSystemRepresentation]);
+    // Build the path with trailing separator for init_file_paths()
+    // It expects a path like "/path/to/lib/" (with trailing slash)
+    NSString *libPathWithSep = [destLib stringByAppendingString:@"/"];
     
-    // This should be called early in initialization
-    // The actual path setup is handled by init_angband()
-    setenv("ANGBAND_PATH", path, 1);
+    // Create a mutable copy that init_file_paths can use
+    char *path = strdup([libPathWithSep fileSystemRepresentation]);
+    
+    // Call the real init_file_paths from init2.c
+    init_file_paths(path);
+    
+    // Override the save and user directories to use app support
+    // (they need to be writable on iOS)
+    string_free(ANGBAND_DIR_SAVE);
+    string_free(ANGBAND_DIR_USER);
+    ANGBAND_DIR_SAVE = string_make([[appSupportPath stringByAppendingPathComponent:@"save"] 
+                                    fileSystemRepresentation]);
+    ANGBAND_DIR_USER = string_make([[appSupportPath stringByAppendingPathComponent:@"user"] 
+                                    fileSystemRepresentation]);
 }
 
 #pragma mark - Term Hooks
@@ -343,7 +357,7 @@ static void init_ios_term(void) {
 void init_ios(void) {
     @autoreleasepool {
         // Initialize file paths
-        init_file_paths();
+        init_ios_file_paths();
         
         // Initialize the term
         init_ios_term();
@@ -374,6 +388,9 @@ int ios_main(int argc, char *argv[]) {
  */
 void ios_run_game(void) {
     @autoreleasepool {
+        // Initialize the iOS frontend first (sets up term)
+        init_ios();
+        
         // Make sure we're on a background thread for the game loop
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             // Initialize Angband

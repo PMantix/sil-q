@@ -1262,7 +1262,7 @@ int monster_stat(monster_type* m_ptr, int stat_type)
     return (stat);
 }
 
-void listen(monster_type* m_ptr)
+void monster_listen(monster_type* m_ptr)
 {
     byte a;
     char c;
@@ -1662,7 +1662,7 @@ void update_mon(int m_idx, bool full)
         Rand_state[i] = playerturn * i * 15485863; // large prime
     }
 
-    listen(m_ptr);
+    monster_listen(m_ptr);
 
     Rand_place = tmp_rand_place;
 

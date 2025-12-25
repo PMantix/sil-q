@@ -4,11 +4,26 @@ This directory contains the iOS port of Sil-Q, a roguelike game.
 
 ## Requirements
 
-- macOS with Xcode 15+ installed
-- iOS 17+ device or simulator
+- macOS with Xcode 16+ installed (tested with Xcode 26.1)
+- iOS 18+ device or simulator
 - Apple Developer account (free account works for personal use)
 
-## Project Setup
+## Quick Start (Recommended)
+
+Use the XcodeGen script to automatically generate the iOS project:
+
+```bash
+cd sil-q
+./src/ios/generate-ios-project.sh
+```
+
+This creates `src/ios/Sil-Q-iOS.xcodeproj`. Then:
+
+1. Open `Sil-Q-iOS.xcodeproj` in Xcode
+2. Select your development team in Signing & Capabilities  
+3. Build and run on your device
+
+## Manual Project Setup
 
 Since Xcode project files are complex, you'll need to create the iOS target manually:
 
@@ -105,7 +120,7 @@ In the iOS target Build Settings:
    - Set to `src/ios/Info.plist`
 
 5. **Deployment Target**:
-   - iOS 17.0 or later
+   - iOS 18.0 or later
 
 6. **Architectures**:
    - Standard (arm64)

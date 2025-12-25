@@ -179,7 +179,7 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     // Row 4: mode, ctrl, space, return, escape
     [self addModeButton:@"123" toRow:rows[3] width:1.2];
     [self addModifierKey:@"^" action:@selector(ctrlPressed:) toRow:rows[3] width:1.0];
-    [self addSpaceKey:toRow:rows[3] width:4.0];
+    [self addSpaceKeyToRow:rows[3] width:4.0];
     [self addSpecialKey:@"↵" keyCode:'\r' toRow:rows[3] width:1.2];
     [self addSpecialKey:@"ESC" keyCode:27 toRow:rows[3] width:1.2];
 }
@@ -202,7 +202,7 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     // Row 4: mode, ctrl, space, return, escape
     [self addModeButton:@"ABC" toRow:rows[3] width:1.2];
     [self addModifierKey:@"^" action:@selector(ctrlPressed:) toRow:rows[3] width:1.0];
-    [self addSpaceKey:toRow:rows[3] width:4.0];
+    [self addSpaceKeyToRow:rows[3] width:4.0];
     [self addSpecialKey:@"↵" keyCode:'\r' toRow:rows[3] width:1.2];
     [self addSpecialKey:@"ESC" keyCode:27 toRow:rows[3] width:1.2];
 }
@@ -234,7 +234,7 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     // Row 3: mode switch, run toggle, space, return, escape
     [self addModeButton:@"ABC" toRow:rows[3] width:1.2];
     [self addSpecialKey:@"Run" keyCode:'.' toRow:rows[3] width:1.0]; // Run/rest
-    [self addSpaceKey:toRow:rows[3] width:3.0];
+    [self addSpaceKeyToRow:rows[3] width:3.0];
     [self addSpecialKey:@"↵" keyCode:'\r' toRow:rows[3] width:1.2];
     [self addSpecialKey:@"ESC" keyCode:27 toRow:rows[3] width:1.2];
 }
@@ -266,7 +266,7 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     // Row 3: mode switch and navigation
     [self addModeButton:@"Move" toRow:rows[3] width:1.2];
     [self addModeButton:@"ABC" toRow:rows[3] width:1.2];
-    [self addSpaceKey:toRow:rows[3] width:2.5];
+    [self addSpaceKeyToRow:rows[3] width:2.5];
     [self addSpecialKey:@"↵" keyCode:'\r' toRow:rows[3] width:1.2];
     [self addSpecialKey:@"ESC" keyCode:27 toRow:rows[3] width:1.2];
 }
@@ -309,11 +309,7 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     key.isSpecial = YES;
     key.backgroundColor = [UIColor colorWithWhite:0.35 alpha:1.0];
     
-    if (widthMultiplier != 1.0) {
-        [key.widthAnchor constraintEqualToAnchor:row.arrangedSubviews.firstObject.widthAnchor 
-                                      multiplier:widthMultiplier].active = YES;
-    }
-    
+    // Add to row first - UIStackView with fillEqually handles sizing
     [row addArrangedSubview:key];
 }
 
@@ -347,12 +343,12 @@ static NSString * const kCommandLabels[] = {@"<Up", @">Down", @",Pick", @".Rest"
     [row addArrangedSubview:key];
 }
 
-- (void)addSpaceKey:(UIStackView *)toRow width:(CGFloat)widthMultiplier {
+- (void)addSpaceKeyToRow:(UIStackView *)row width:(CGFloat)widthMultiplier {
     SilKeyButton *key = [self createKeyWithTitle:@"space"];
     key.keyCode = ' ';
     key.titleLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightRegular];
     _spaceButton = key;
-    [toRow addArrangedSubview:key];
+    [row addArrangedSubview:key];
 }
 
 #pragma mark - Key Actions

@@ -1,0 +1,545 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0175157E59223D88D24BDA5E /* squelch.c in Sources */ = {isa = PBXBuildFile; fileRef = 6C008D0C2494E959DC9B4821 /* squelch.c */; };
+		0716F4AF2DCCF07DD7A65AE4 /* object1.c in Sources */ = {isa = PBXBuildFile; fileRef = D8BF2E8895865AC794039E2D /* object1.c */; };
+		1052AEE36E0BBBFA24F7C847 /* z-util.c in Sources */ = {isa = PBXBuildFile; fileRef = E423C93CA590F99DD70D80D1 /* z-util.c */; };
+		1399325704379686BEDD25D9 /* spells2.c in Sources */ = {isa = PBXBuildFile; fileRef = AB8C88779170AECEC2DA50FA /* spells2.c */; };
+		1CC78FB6FAED74EECC905986 /* z-form.c in Sources */ = {isa = PBXBuildFile; fileRef = 9A668B151569170E71B189A8 /* z-form.c */; };
+		2244B025FD5E808065A214F0 /* monster2.c in Sources */ = {isa = PBXBuildFile; fileRef = F3F46425BA9813585F5D138A /* monster2.c */; };
+		2A952384C86E0AA5E6E3BB17 /* z-rand.c in Sources */ = {isa = PBXBuildFile; fileRef = 0B1019DB55732FF55ACC3BD0 /* z-rand.c */; };
+		2C246AE2F7E485D3B5777EF3 /* birth.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DECC457B8023BD32AB58215 /* birth.c */; };
+		2C260D3A57FCAF03179C62AA /* tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 4334383497887C9D47B2FCDC /* tables.c */; };
+		31163B97A60A39CB9EB85279 /* cave.c in Sources */ = {isa = PBXBuildFile; fileRef = 51AB765DCD584D6DA1A58294 /* cave.c */; };
+		327C71B5B441E5C96A00C2A1 /* randart.c in Sources */ = {isa = PBXBuildFile; fileRef = EFDD86BD11739EB5835F21E5 /* randart.c */; };
+		39ECD64EEB3FD600E8A9E4E9 /* load.c in Sources */ = {isa = PBXBuildFile; fileRef = 34F270910D5E9911B83204B5 /* load.c */; };
+		3A9BF3EE4F16342B46EC826B /* monster1.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E70E2A5028779DB5C81B3BB /* monster1.c */; };
+		409D40332B6F63401D1C12C9 /* z-term.c in Sources */ = {isa = PBXBuildFile; fileRef = 76FCD921C25AA11ABB248BD5 /* z-term.c */; };
+		44001878FE6121FAB184A718 /* main-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F40C1393700ED963F3C8A8 /* main-ios.m */; };
+		51BCB6E0D2B0AFE3D01E1A3E /* SilAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFD45C8BDE1F6BB000762D5 /* SilAppDelegate.m */; };
+		5BE3C04ED019ABA8D98EEE73 /* cmd6.c in Sources */ = {isa = PBXBuildFile; fileRef = E1BF6D238FAE067539D1A7FE /* cmd6.c */; };
+		5E7E2D351A4AF5F80119CEDC /* dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = 8D4938355150F0F7D8E69BAF /* dungeon.c */; };
+		6500BBC569ED1304E7EB51CC /* save.c in Sources */ = {isa = PBXBuildFile; fileRef = 13691BFF8372A281E58EB690 /* save.c */; };
+		6914664233EF0A6E35759C43 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 5EBBEB71852B37F556E0CCE2 /* files.c */; };
+		6AB042DDEDEC74474F62DB7A /* init1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1C58CC9C6011584564E780FB /* init1.c */; };
+		7C760E870A9CBAD5BE4341C1 /* xtra2.c in Sources */ = {isa = PBXBuildFile; fileRef = 17933BF221B6CE9001F8D04B /* xtra2.c */; };
+		8217BC12DA6CB904D77735DE /* generate.c in Sources */ = {isa = PBXBuildFile; fileRef = 16D5092303434276620E9746 /* generate.c */; };
+		8327117BD704D7D3DE7F83A3 /* object2.c in Sources */ = {isa = PBXBuildFile; fileRef = 8B233C61F4A23EA535F75A48 /* object2.c */; };
+		9271927269FE38E09CBA5ED3 /* obj-info.c in Sources */ = {isa = PBXBuildFile; fileRef = 5A10F60027E85E55D9BE2F81 /* obj-info.c */; };
+		953483B911DA9685994D3887 /* cmd4.c in Sources */ = {isa = PBXBuildFile; fileRef = 05B70DF89F23B627219932BD /* cmd4.c */; };
+		A2AE709DF44A70E7E216B260 /* cmd5.c in Sources */ = {isa = PBXBuildFile; fileRef = 705AD7DB38800FEBF629B2DE /* cmd5.c */; };
+		A375F1048A183C77A9DF2E7D /* z-virt.c in Sources */ = {isa = PBXBuildFile; fileRef = 7EE4A29DE0FE9020B6AFB0B9 /* z-virt.c */; };
+		AC481BFAD1401BB798AF0760 /* SilTerminalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 321043926555A747FF7F4D77 /* SilTerminalView.m */; };
+		ADDA4B10DD24D60C124EB673 /* init2.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B571E55578D07E30DA6AEAB /* init2.c */; };
+		AEB8991D73FBBAEA00A73DEC /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 83FAA19C2BE7C3F8B0B4C082 /* lib */; };
+		B1238F0989CC284BC39E5E73 /* use-obj.c in Sources */ = {isa = PBXBuildFile; fileRef = DD44110B215D0716803A7BB6 /* use-obj.c */; };
+		BC0FF915C8EF8D260A245D55 /* xtra1.c in Sources */ = {isa = PBXBuildFile; fileRef = B47292B40ED1E0A1EF8C822F /* xtra1.c */; };
+		C4D5E4A762AD2FFC409374FE /* variable.c in Sources */ = {isa = PBXBuildFile; fileRef = 22BE235AF5998DDA4C965638 /* variable.c */; };
+		C90072B6DD54284BC81F3F21 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32D2318C073D4096A3D6A /* util.c */; };
+		CBB6065E3EB47CE4DB166FE0 /* SilViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4331E56CA314E2CDA1925F /* SilViewController.m */; };
+		CFB906498F554F39A6867464 /* melee1.c in Sources */ = {isa = PBXBuildFile; fileRef = D39C3A861E4FE0C9C5599BAB /* melee1.c */; };
+		D8B445F639A89B46C6ED6905 /* spells1.c in Sources */ = {isa = PBXBuildFile; fileRef = CFFE3316C6B1152447220C12 /* spells1.c */; };
+		DF358FF0200957FAA934F61B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A323E5ACF73649C87006147 /* LaunchScreen.storyboard */; };
+		E01C1A137D9522C63A4BAB9A /* wizard2.c in Sources */ = {isa = PBXBuildFile; fileRef = 31F4143CB4C2475D45EF46C5 /* wizard2.c */; };
+		F23F06C525577F0A27A0C7C4 /* wizard1.c in Sources */ = {isa = PBXBuildFile; fileRef = 49BDA75CB1435FA0B2F1F9D1 /* wizard1.c */; };
+		F4E4B6AC84E88D09EBDCEDB3 /* SilKeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E38BA10660A35E31FCF53DE /* SilKeyboardView.m */; };
+		F7FE8EF8DDF93FCA0E9E4718 /* cmd1.c in Sources */ = {isa = PBXBuildFile; fileRef = C81ED1F7F9C466D8DA78AFE3 /* cmd1.c */; };
+		F8B51D88E02EBFC5B98A7131 /* cmd2.c in Sources */ = {isa = PBXBuildFile; fileRef = 79E3C8DEEAA9EAC7B5032C6C /* cmd2.c */; };
+		F93EA8DBC7869C7DCA91A520 /* cmd3.c in Sources */ = {isa = PBXBuildFile; fileRef = 0CAFB50F0448B0728B8DBDFC /* cmd3.c */; };
+		FE6FCB63B5391AE1F33041BC /* melee2.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BF8CB89FB97C4739ABD1A2C /* melee2.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		05211E3EF23BDC116B0DF160 /* z-rand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "z-rand.h"; sourceTree = "<group>"; };
+		05B70DF89F23B627219932BD /* cmd4.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cmd4.c; sourceTree = "<group>"; };
+		0B1019DB55732FF55ACC3BD0 /* z-rand.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "z-rand.c"; sourceTree = "<group>"; };
+		0CAFB50F0448B0728B8DBDFC /* cmd3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cmd3.c; sourceTree = "<group>"; };
+		13691BFF8372A281E58EB690 /* save.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = save.c; sourceTree = "<group>"; };
+		16D5092303434276620E9746 /* generate.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = generate.c; sourceTree = "<group>"; };
+		17933BF221B6CE9001F8D04B /* xtra2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xtra2.c; sourceTree = "<group>"; };
+		1C58CC9C6011584564E780FB /* init1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = init1.c; sourceTree = "<group>"; };
+		1DA32D2318C073D4096A3D6A /* util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
+		1E38BA10660A35E31FCF53DE /* SilKeyboardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SilKeyboardView.m; sourceTree = "<group>"; };
+		1FD5F28902FDF1D7364552A5 /* z-util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "z-util.h"; sourceTree = "<group>"; };
+		22BE235AF5998DDA4C965638 /* variable.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = variable.c; sourceTree = "<group>"; };
+		2E92DAE1484A03BAE353852C /* Sil-Q.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sil-Q.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31E5B36AE36A1C4DE12957E3 /* SilAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SilAppDelegate.h; sourceTree = "<group>"; };
+		31F4143CB4C2475D45EF46C5 /* wizard2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wizard2.c; sourceTree = "<group>"; };
+		321043926555A747FF7F4D77 /* SilTerminalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SilTerminalView.m; sourceTree = "<group>"; };
+		34F270910D5E9911B83204B5 /* load.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = load.c; sourceTree = "<group>"; };
+		34F40C1393700ED963F3C8A8 /* main-ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "main-ios.m"; sourceTree = "<group>"; };
+		3992D156C4BAEBF4335D926C /* h-define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "h-define.h"; sourceTree = "<group>"; };
+		3DECC457B8023BD32AB58215 /* birth.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = birth.c; sourceTree = "<group>"; };
+		3E70E2A5028779DB5C81B3BB /* monster1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = monster1.c; sourceTree = "<group>"; };
+		40DA82596AB327BA3BB9A393 /* h-type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "h-type.h"; sourceTree = "<group>"; };
+		4190ADAA2FB3671CA18032EF /* init.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = init.h; sourceTree = "<group>"; };
+		4334383497887C9D47B2FCDC /* tables.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tables.c; sourceTree = "<group>"; };
+		49BDA75CB1435FA0B2F1F9D1 /* wizard1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wizard1.c; sourceTree = "<group>"; };
+		4BF8CB89FB97C4739ABD1A2C /* melee2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = melee2.c; sourceTree = "<group>"; };
+		51AB765DCD584D6DA1A58294 /* cave.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cave.c; sourceTree = "<group>"; };
+		5432D03E090E50E8A33924CF /* angband.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = angband.h; sourceTree = "<group>"; };
+		5A10F60027E85E55D9BE2F81 /* obj-info.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "obj-info.c"; sourceTree = "<group>"; };
+		5EBBEB71852B37F556E0CCE2 /* files.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
+		6077D69F40911F1D5962B26A /* h-system.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "h-system.h"; sourceTree = "<group>"; };
+		609C23DB56C7CF2D7A43C9DB /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		6A323E5ACF73649C87006147 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6B571E55578D07E30DA6AEAB /* init2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = init2.c; sourceTree = "<group>"; };
+		6C008D0C2494E959DC9B4821 /* squelch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = squelch.c; sourceTree = "<group>"; };
+		6CEF7FFCA0BEAED6D1DD7EF7 /* h-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "h-config.h"; sourceTree = "<group>"; };
+		705AD7DB38800FEBF629B2DE /* cmd5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cmd5.c; sourceTree = "<group>"; };
+		748959F2A070D6438BA488B6 /* z-term.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "z-term.h"; sourceTree = "<group>"; };
+		76FCD921C25AA11ABB248BD5 /* z-term.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "z-term.c"; sourceTree = "<group>"; };
+		79E3C8DEEAA9EAC7B5032C6C /* cmd2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cmd2.c; sourceTree = "<group>"; };
+		7EE4A29DE0FE9020B6AFB0B9 /* z-virt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "z-virt.c"; sourceTree = "<group>"; };
+		83FAA19C2BE7C3F8B0B4C082 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = ../../lib; sourceTree = SOURCE_ROOT; };
+		8B233C61F4A23EA535F75A48 /* object2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = object2.c; sourceTree = "<group>"; };
+		8D4938355150F0F7D8E69BAF /* dungeon.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dungeon.c; sourceTree = "<group>"; };
+		92539884BCD2088386C20EFD /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = defines.h; sourceTree = "<group>"; };
+		93A503C2FD376029E5A15282 /* externs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = externs.h; sourceTree = "<group>"; };
+		9A668B151569170E71B189A8 /* z-form.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "z-form.c"; sourceTree = "<group>"; };
+		AB8C88779170AECEC2DA50FA /* spells2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spells2.c; sourceTree = "<group>"; };
+		AECC56B4BFEB31EB1D16F28E /* SilTerminalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SilTerminalView.h; sourceTree = "<group>"; };
+		B47292B40ED1E0A1EF8C822F /* xtra1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xtra1.c; sourceTree = "<group>"; };
+		C08BC043EB2918FD3FA77B05 /* z-virt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "z-virt.h"; sourceTree = "<group>"; };
+		C81ED1F7F9C466D8DA78AFE3 /* cmd1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cmd1.c; sourceTree = "<group>"; };
+		CFFE3316C6B1152447220C12 /* spells1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spells1.c; sourceTree = "<group>"; };
+		D040653E37AE198E771C9B47 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		D39C3A861E4FE0C9C5599BAB /* melee1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = melee1.c; sourceTree = "<group>"; };
+		D8BF2E8895865AC794039E2D /* object1.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = object1.c; sourceTree = "<group>"; };
+		DB8FAFC2045F7C59724DAC94 /* z-form.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "z-form.h"; sourceTree = "<group>"; };
+		DD44110B215D0716803A7BB6 /* use-obj.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "use-obj.c"; sourceTree = "<group>"; };
+		DE32703C319BDB682A85D1B7 /* SilViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SilViewController.h; sourceTree = "<group>"; };
+		E1BF6D238FAE067539D1A7FE /* cmd6.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cmd6.c; sourceTree = "<group>"; };
+		E423C93CA590F99DD70D80D1 /* z-util.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "z-util.c"; sourceTree = "<group>"; };
+		EFDD86BD11739EB5835F21E5 /* randart.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = randart.c; sourceTree = "<group>"; };
+		EFFD45C8BDE1F6BB000762D5 /* SilAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SilAppDelegate.m; sourceTree = "<group>"; };
+		F3F46425BA9813585F5D138A /* monster2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = monster2.c; sourceTree = "<group>"; };
+		F70FF113647715FB3183B2EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FB4331E56CA314E2CDA1925F /* SilViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SilViewController.m; sourceTree = "<group>"; };
+		FCFC778358AEEAF14CCFE13A /* h-basic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "h-basic.h"; sourceTree = "<group>"; };
+		FD1A791F67077ABA575231C2 /* SilKeyboardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SilKeyboardView.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0163134548FEF6BCDB1B07F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2E92DAE1484A03BAE353852C /* Sil-Q.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96D07D366A7138BE7A58AC17 = {
+			isa = PBXGroup;
+			children = (
+				83FAA19C2BE7C3F8B0B4C082 /* lib */,
+				9DC4E1022E1FC2932BE038CB /* ios */,
+				C4BB5D730641FE41B66079A5 /* src */,
+				0163134548FEF6BCDB1B07F3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9DC4E1022E1FC2932BE038CB /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				F70FF113647715FB3183B2EC /* Info.plist */,
+				6A323E5ACF73649C87006147 /* LaunchScreen.storyboard */,
+				34F40C1393700ED963F3C8A8 /* main-ios.m */,
+				31E5B36AE36A1C4DE12957E3 /* SilAppDelegate.h */,
+				EFFD45C8BDE1F6BB000762D5 /* SilAppDelegate.m */,
+				FD1A791F67077ABA575231C2 /* SilKeyboardView.h */,
+				1E38BA10660A35E31FCF53DE /* SilKeyboardView.m */,
+				AECC56B4BFEB31EB1D16F28E /* SilTerminalView.h */,
+				321043926555A747FF7F4D77 /* SilTerminalView.m */,
+				DE32703C319BDB682A85D1B7 /* SilViewController.h */,
+				FB4331E56CA314E2CDA1925F /* SilViewController.m */,
+			);
+			name = ios;
+			path = .;
+			sourceTree = "<group>";
+		};
+		C4BB5D730641FE41B66079A5 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5432D03E090E50E8A33924CF /* angband.h */,
+				3DECC457B8023BD32AB58215 /* birth.c */,
+				51AB765DCD584D6DA1A58294 /* cave.c */,
+				C81ED1F7F9C466D8DA78AFE3 /* cmd1.c */,
+				79E3C8DEEAA9EAC7B5032C6C /* cmd2.c */,
+				0CAFB50F0448B0728B8DBDFC /* cmd3.c */,
+				05B70DF89F23B627219932BD /* cmd4.c */,
+				705AD7DB38800FEBF629B2DE /* cmd5.c */,
+				E1BF6D238FAE067539D1A7FE /* cmd6.c */,
+				609C23DB56C7CF2D7A43C9DB /* config.h */,
+				92539884BCD2088386C20EFD /* defines.h */,
+				8D4938355150F0F7D8E69BAF /* dungeon.c */,
+				93A503C2FD376029E5A15282 /* externs.h */,
+				5EBBEB71852B37F556E0CCE2 /* files.c */,
+				16D5092303434276620E9746 /* generate.c */,
+				FCFC778358AEEAF14CCFE13A /* h-basic.h */,
+				6CEF7FFCA0BEAED6D1DD7EF7 /* h-config.h */,
+				3992D156C4BAEBF4335D926C /* h-define.h */,
+				6077D69F40911F1D5962B26A /* h-system.h */,
+				40DA82596AB327BA3BB9A393 /* h-type.h */,
+				4190ADAA2FB3671CA18032EF /* init.h */,
+				1C58CC9C6011584564E780FB /* init1.c */,
+				6B571E55578D07E30DA6AEAB /* init2.c */,
+				34F270910D5E9911B83204B5 /* load.c */,
+				D39C3A861E4FE0C9C5599BAB /* melee1.c */,
+				4BF8CB89FB97C4739ABD1A2C /* melee2.c */,
+				3E70E2A5028779DB5C81B3BB /* monster1.c */,
+				F3F46425BA9813585F5D138A /* monster2.c */,
+				5A10F60027E85E55D9BE2F81 /* obj-info.c */,
+				D8BF2E8895865AC794039E2D /* object1.c */,
+				8B233C61F4A23EA535F75A48 /* object2.c */,
+				EFDD86BD11739EB5835F21E5 /* randart.c */,
+				13691BFF8372A281E58EB690 /* save.c */,
+				CFFE3316C6B1152447220C12 /* spells1.c */,
+				AB8C88779170AECEC2DA50FA /* spells2.c */,
+				6C008D0C2494E959DC9B4821 /* squelch.c */,
+				4334383497887C9D47B2FCDC /* tables.c */,
+				D040653E37AE198E771C9B47 /* types.h */,
+				DD44110B215D0716803A7BB6 /* use-obj.c */,
+				1DA32D2318C073D4096A3D6A /* util.c */,
+				22BE235AF5998DDA4C965638 /* variable.c */,
+				49BDA75CB1435FA0B2F1F9D1 /* wizard1.c */,
+				31F4143CB4C2475D45EF46C5 /* wizard2.c */,
+				B47292B40ED1E0A1EF8C822F /* xtra1.c */,
+				17933BF221B6CE9001F8D04B /* xtra2.c */,
+				9A668B151569170E71B189A8 /* z-form.c */,
+				DB8FAFC2045F7C59724DAC94 /* z-form.h */,
+				0B1019DB55732FF55ACC3BD0 /* z-rand.c */,
+				05211E3EF23BDC116B0DF160 /* z-rand.h */,
+				76FCD921C25AA11ABB248BD5 /* z-term.c */,
+				748959F2A070D6438BA488B6 /* z-term.h */,
+				E423C93CA590F99DD70D80D1 /* z-util.c */,
+				1FD5F28902FDF1D7364552A5 /* z-util.h */,
+				7EE4A29DE0FE9020B6AFB0B9 /* z-virt.c */,
+				C08BC043EB2918FD3FA77B05 /* z-virt.h */,
+			);
+			name = src;
+			path = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C463B0F63F7C6CC45D00FF9D /* Sil-Q */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1646CE251D56E39FF3F7444 /* Build configuration list for PBXNativeTarget "Sil-Q" */;
+			buildPhases = (
+				E33686FEFF18F7A9EE8E8E6A /* Sources */,
+				6ABA02D45475C8586D726822 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Sil-Q";
+			packageProductDependencies = (
+			);
+			productName = "Sil-Q";
+			productReference = 2E92DAE1484A03BAE353852C /* Sil-Q.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		355FC4E9167C302645962A61 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					C463B0F63F7C6CC45D00FF9D = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = E8AA59A6E07D09A70EC6FA9B /* Build configuration list for PBXProject "Sil-Q-iOS" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 96D07D366A7138BE7A58AC17;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C463B0F63F7C6CC45D00FF9D /* Sil-Q */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6ABA02D45475C8586D726822 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF358FF0200957FAA934F61B /* LaunchScreen.storyboard in Resources */,
+				AEB8991D73FBBAEA00A73DEC /* lib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E33686FEFF18F7A9EE8E8E6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				51BCB6E0D2B0AFE3D01E1A3E /* SilAppDelegate.m in Sources */,
+				F4E4B6AC84E88D09EBDCEDB3 /* SilKeyboardView.m in Sources */,
+				AC481BFAD1401BB798AF0760 /* SilTerminalView.m in Sources */,
+				CBB6065E3EB47CE4DB166FE0 /* SilViewController.m in Sources */,
+				2C246AE2F7E485D3B5777EF3 /* birth.c in Sources */,
+				31163B97A60A39CB9EB85279 /* cave.c in Sources */,
+				F7FE8EF8DDF93FCA0E9E4718 /* cmd1.c in Sources */,
+				F8B51D88E02EBFC5B98A7131 /* cmd2.c in Sources */,
+				F93EA8DBC7869C7DCA91A520 /* cmd3.c in Sources */,
+				953483B911DA9685994D3887 /* cmd4.c in Sources */,
+				A2AE709DF44A70E7E216B260 /* cmd5.c in Sources */,
+				5BE3C04ED019ABA8D98EEE73 /* cmd6.c in Sources */,
+				5E7E2D351A4AF5F80119CEDC /* dungeon.c in Sources */,
+				6914664233EF0A6E35759C43 /* files.c in Sources */,
+				8217BC12DA6CB904D77735DE /* generate.c in Sources */,
+				6AB042DDEDEC74474F62DB7A /* init1.c in Sources */,
+				ADDA4B10DD24D60C124EB673 /* init2.c in Sources */,
+				39ECD64EEB3FD600E8A9E4E9 /* load.c in Sources */,
+				44001878FE6121FAB184A718 /* main-ios.m in Sources */,
+				CFB906498F554F39A6867464 /* melee1.c in Sources */,
+				FE6FCB63B5391AE1F33041BC /* melee2.c in Sources */,
+				3A9BF3EE4F16342B46EC826B /* monster1.c in Sources */,
+				2244B025FD5E808065A214F0 /* monster2.c in Sources */,
+				9271927269FE38E09CBA5ED3 /* obj-info.c in Sources */,
+				0716F4AF2DCCF07DD7A65AE4 /* object1.c in Sources */,
+				8327117BD704D7D3DE7F83A3 /* object2.c in Sources */,
+				327C71B5B441E5C96A00C2A1 /* randart.c in Sources */,
+				6500BBC569ED1304E7EB51CC /* save.c in Sources */,
+				D8B445F639A89B46C6ED6905 /* spells1.c in Sources */,
+				1399325704379686BEDD25D9 /* spells2.c in Sources */,
+				0175157E59223D88D24BDA5E /* squelch.c in Sources */,
+				2C260D3A57FCAF03179C62AA /* tables.c in Sources */,
+				B1238F0989CC284BC39E5E73 /* use-obj.c in Sources */,
+				C90072B6DD54284BC81F3F21 /* util.c in Sources */,
+				C4D5E4A762AD2FFC409374FE /* variable.c in Sources */,
+				F23F06C525577F0A27A0C7C4 /* wizard1.c in Sources */,
+				E01C1A137D9522C63A4BAB9A /* wizard2.c in Sources */,
+				BC0FF915C8EF8D260A245D55 /* xtra1.c in Sources */,
+				7C760E870A9CBAD5BE4341C1 /* xtra2.c in Sources */,
+				1CC78FB6FAED74EECC905986 /* z-form.c in Sources */,
+				2A952384C86E0AA5E6E3BB17 /* z-rand.c in Sources */,
+				409D40332B6F63401D1C12C9 /* z-term.c in Sources */,
+				1052AEE36E0BBBFA24F7C847 /* z-util.c in Sources */,
+				A375F1048A183C77A9DF2E7D /* z-virt.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		099B6F2A2D9FAFCD2A0172C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 84D7W3L4SH;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_IOS=1",
+					"MACH_O_CARBON=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		77631DC3D6E7DA7E763763CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 84D7W3L4SH;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"USE_IOS=1",
+					"MACH_O_CARBON=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9A3BD147E7309EDEFD3BF2E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.silq.sil-q-ios";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E6258AC4F34E164F1DA75505 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.silq.sil-q-ios";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E8AA59A6E07D09A70EC6FA9B /* Build configuration list for PBXProject "Sil-Q-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				099B6F2A2D9FAFCD2A0172C9 /* Debug */,
+				77631DC3D6E7DA7E763763CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F1646CE251D56E39FF3F7444 /* Build configuration list for PBXNativeTarget "Sil-Q" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A3BD147E7309EDEFD3BF2E6 /* Debug */,
+				E6258AC4F34E164F1DA75505 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 355FC4E9167C302645962A61 /* Project object */;
+}

@@ -96,9 +96,9 @@
 
 #endif
 
-#if defined(__DJGPP__) || defined(__MWERKS__)
+#if defined(__DJGPP__) || defined(__MWERKS__) || defined(USE_IOS) || (defined(__APPLE__) && defined(__MACH__))
 #include <unistd.h>
-#endif /* __DJGPP__ || __MWERKS__ */
+#endif /* __DJGPP__ || __MWERKS__ || USE_IOS || Apple */
 
 #include <string.h>
 
