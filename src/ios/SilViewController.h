@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, SilTouchMode) {
  * SilViewController is the main view controller for the game.
  * It manages the terminal view, keyboard, and touch input.
  */
-@interface SilViewController : UIViewController <SilKeyboardViewDelegate>
+@interface SilViewController : UIViewController <SilKeyboardViewDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 /** The terminal view displaying the game */
 @property (nonatomic, strong, readonly) SilTerminalView *terminalView;

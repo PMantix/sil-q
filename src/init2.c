@@ -1626,8 +1626,21 @@ void init_angband(void)
     display_introduction();
 
 #ifdef USE_IOS
-    /* Give time to read the intro on iOS (loading is fast). */
-    Term_xtra(TERM_XTRA_DELAY, 30000);
+    /* Allow a brief read of the intro on iOS, but don't block input.
+     * Exit early as soon as any key is pending (without consuming it).
+     */
+    {
+        const int max_ms = 6000;
+        const int step_ms = 50;
+        int waited_ms;
+        char ch;
+
+        for (waited_ms = 0; waited_ms < max_ms; waited_ms += step_ms)
+        {
+            if (Term_inkey(&ch, FALSE, FALSE) == 0) break;
+            Term_xtra(TERM_XTRA_DELAY, step_ms);
+        }
+    }
 #endif
 
     /*** Verify (or create) the "high score" file ***/

@@ -45,14 +45,23 @@ static const unichar kMovementKeyMap[9] = {
     UIScrollView *_scrollView;
     UIView *_containerView;
     UITapGestureRecognizer *_tapGesture;
-    UISwipeGestureRecognizer *_swipeUpGesture;
-    UISwipeGestureRecognizer *_swipeDownGesture;
+    UITapGestureRecognizer *_doubleTapGesture;
+    UITapGestureRecognizer *_twoFingerTapGesture;
+    UISwipeGestureRecognizer *_twoFingerSwipeDownGesture;
+    UIPanGestureRecognizer *_movementPanGesture;
     UILongPressGestureRecognizer *_longPressGesture;
+    UIScreenEdgePanGestureRecognizer *_leftEdgeGesture;
+    UIScreenEdgePanGestureRecognizer *_rightEdgeGesture;
+
+    BOOL _longPressDidSendAlter;
+    CGPoint _longPressStartPoint;
     
     NSLayoutConstraint *_keyboardBottomConstraint;
     NSLayoutConstraint *_noKeyboardConstraint;
     NSLayoutConstraint *_keyboardHeightConstraint;
     UIButton *_keyboardToggleButton;
+    NSLayoutConstraint *_keyboardToggleBottomToSafeConstraint;
+    NSLayoutConstraint *_keyboardToggleBottomToKeyboardConstraint;
     BOOL _didSetInitialZoom;
     BOOL _gameRunning;
 }
@@ -84,6 +93,7 @@ static const unichar kMovementKeyMap[9] = {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.multipleTouchEnabled = YES;
     self.view.backgroundColor = [UIColor blackColor];
     
     [self setupScrollView];
@@ -107,9 +117,13 @@ static const unichar kMovementKeyMap[9] = {
     [self.view addSubview:_keyboardToggleButton];
 
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    _keyboardToggleBottomToSafeConstraint = [_keyboardToggleButton.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-12];
+    _keyboardToggleBottomToKeyboardConstraint = [_keyboardToggleButton.bottomAnchor constraintEqualToAnchor:_keyboardView.topAnchor constant:-12];
+    _keyboardToggleBottomToKeyboardConstraint.active = NO;
+
     [NSLayoutConstraint activateConstraints:@[
         [_keyboardToggleButton.trailingAnchor constraintEqualToAnchor:safe.trailingAnchor constant:-12],
-        [_keyboardToggleButton.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-12],
+        _keyboardToggleBottomToSafeConstraint,
     ]];
 }
 
@@ -117,12 +131,15 @@ static const unichar kMovementKeyMap[9] = {
     _scrollView = [[UIScrollView alloc] init];
     _scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     _scrollView.backgroundColor = [UIColor blackColor];
+    _scrollView.multipleTouchEnabled = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.bounces = YES;
     _scrollView.minimumZoomScale = 0.5;
     _scrollView.maximumZoomScale = 2.0;
-    _scrollView.delegate = (id<UIScrollViewDelegate>)self;
+    _scrollView.delegate = self;
+    // Reserve one-finger swipes for game movement; use two-finger pan for scrolling.
+    _scrollView.panGestureRecognizer.minimumNumberOfTouches = 2;
     [self.view addSubview:_scrollView];
     
     _containerView = [[UIView alloc] init];
@@ -203,34 +220,75 @@ static const unichar kMovementKeyMap[9] = {
 }
 
 - (void)setupGestures {
-    // Single tap for movement or selection
+    // 1-finger tap: wait a turn (z)
     _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _tapGesture.numberOfTapsRequired = 1;
-    [_terminalView addGestureRecognizer:_tapGesture];
-    
-    // Double tap to toggle keyboard
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] 
-        initWithTarget:self action:@selector(handleDoubleTap:)];
-    doubleTap.numberOfTapsRequired = 2;
-    // Attach to the full view so it still works when the terminal doesn't fill the screen
-    [self.view addGestureRecognizer:doubleTap];
-    [_tapGesture requireGestureRecognizerToFail:doubleTap];
-    
-    // Swipe up to show keyboard
-    _swipeUpGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeUp:)];
-    _swipeUpGesture.direction = UISwipeGestureRecognizerDirectionUp;
-    [self.view addGestureRecognizer:_swipeUpGesture];
-    
-    // Swipe down to hide keyboard
-    _swipeDownGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeDown:)];
-    _swipeDownGesture.direction = UISwipeGestureRecognizerDirectionDown;
-    [self.view addGestureRecognizer:_swipeDownGesture];
-    
-    // Long press for context menu / look command
-    _longPressGesture = [[UILongPressGestureRecognizer alloc] 
-        initWithTarget:self action:@selector(handleLongPress:)];
-    _longPressGesture.minimumPressDuration = 0.5;
-    [_terminalView addGestureRecognizer:_longPressGesture];
+    _tapGesture.cancelsTouchesInView = NO;
+    _tapGesture.delegate = self;
+    [self.view addGestureRecognizer:_tapGesture];
+
+    // 1-finger double tap: rest (Z)
+    _doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    _doubleTapGesture.numberOfTapsRequired = 2;
+    _doubleTapGesture.cancelsTouchesInView = NO;
+    _doubleTapGesture.delegate = self;
+    [self.view addGestureRecognizer:_doubleTapGesture];
+    [_tapGesture requireGestureRecognizerToFail:_doubleTapGesture];
+
+    // 2-finger tap: ESC
+    _twoFingerTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTwoFingerTap:)];
+    _twoFingerTapGesture.numberOfTapsRequired = 1;
+    _twoFingerTapGesture.numberOfTouchesRequired = 2;
+    _twoFingerTapGesture.cancelsTouchesInView = NO;
+    _twoFingerTapGesture.delegate = self;
+    [self.view addGestureRecognizer:_twoFingerTapGesture];
+
+    // 2-finger swipe down: pick up (g)
+    _twoFingerSwipeDownGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleTwoFingerSwipeDown:)];
+    _twoFingerSwipeDownGesture.direction = UISwipeGestureRecognizerDirectionDown;
+    _twoFingerSwipeDownGesture.numberOfTouchesRequired = 2;
+    _twoFingerSwipeDownGesture.cancelsTouchesInView = NO;
+    _twoFingerSwipeDownGesture.delegate = self;
+    [self.view addGestureRecognizer:_twoFingerSwipeDownGesture];
+
+    // 2-finger swipe up: show keyboard
+    UISwipeGestureRecognizer *twoFingerSwipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleTwoFingerSwipeUp:)];
+    twoFingerSwipeUp.direction = UISwipeGestureRecognizerDirectionUp;
+    twoFingerSwipeUp.numberOfTouchesRequired = 2;
+    twoFingerSwipeUp.cancelsTouchesInView = NO;
+    twoFingerSwipeUp.delegate = self;
+    [self.view addGestureRecognizer:twoFingerSwipeUp];
+
+    // Prefer swipe commands over 2-finger scroll panning.
+    [_scrollView.panGestureRecognizer requireGestureRecognizerToFail:_twoFingerSwipeDownGesture];
+    [_scrollView.panGestureRecognizer requireGestureRecognizerToFail:twoFingerSwipeUp];
+
+    // 1-finger pan: movement (8-dir) / flick run
+    _movementPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleMovementPan:)];
+    _movementPanGesture.minimumNumberOfTouches = 1;
+    _movementPanGesture.maximumNumberOfTouches = 1;
+    _movementPanGesture.cancelsTouchesInView = NO;
+    _movementPanGesture.delegate = self;
+    [self.view addGestureRecognizer:_movementPanGesture];
+
+    // Long press then nudge: alter ("/") + direction. Long press without nudge: look ("l").
+    _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    _longPressGesture.minimumPressDuration = 0.35;
+    _longPressGesture.allowableMovement = 20.0;
+    _longPressGesture.cancelsTouchesInView = NO;
+    _longPressGesture.delegate = self;
+    [self.view addGestureRecognizer:_longPressGesture];
+
+    // Screen-edge gestures: messages/help
+    _leftEdgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleLeftEdge:)];
+    _leftEdgeGesture.edges = UIRectEdgeLeft;
+    _leftEdgeGesture.delegate = self;
+    [self.view addGestureRecognizer:_leftEdgeGesture];
+
+    _rightEdgeGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleRightEdge:)];
+    _rightEdgeGesture.edges = UIRectEdgeRight;
+    _rightEdgeGesture.delegate = self;
+    [self.view addGestureRecognizer:_rightEdgeGesture];
 }
 
 - (void)setupNotifications {
@@ -305,39 +363,25 @@ static const unichar kMovementKeyMap[9] = {
     return UIStatusBarStyleLightContent;
 }
 
+#pragma mark - Rotation
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return (UIInterfaceOrientationMaskPortrait |
+            UIInterfaceOrientationMaskLandscapeLeft |
+            UIInterfaceOrientationMaskLandscapeRight);
+}
+
 #pragma mark - Gesture Handlers
 
 - (void)handleTap:(UITapGestureRecognizer *)gesture {
     if (gesture.state != UIGestureRecognizerStateEnded) return;
-    
-    CGPoint point = [gesture locationInView:_terminalView];
-    
-    switch (_touchMode) {
-        case SilTouchModeMovement:
-            [self handleMovementTap:point];
-            break;
-        case SilTouchModeTarget:
-            [self handleTargetTap:point];
-            break;
-        case SilTouchModeDisabled:
-            break;
-    }
-}
 
-- (void)handleMovementTap:(CGPoint)point {
-    // Divide the terminal into a 3x3 grid for movement
-    CGSize termSize = _terminalView.bounds.size;
-    
-    int col = (int)(point.x / (termSize.width / 3));
-    int row = (int)(point.y / (termSize.height / 3));
-    
-    col = MIN(2, MAX(0, col));
-    row = MIN(2, MAX(0, row));
-    
-    int index = row * 3 + col;
-    unichar movementKey = kMovementKeyMap[index];
-    
-    [self queueKey:movementKey modifiers:0];
+    // Wait (and search)
+    [self queueKey:'z' modifiers:0];
 }
 
 - (void)handleTargetTap:(CGPoint)point {
@@ -353,27 +397,143 @@ static const unichar kMovementKeyMap[9] = {
 }
 
 - (void)handleDoubleTap:(UITapGestureRecognizer *)gesture {
-    [self toggleKeyboard];
+    if (gesture.state != UIGestureRecognizerStateEnded) return;
+    // Rest
+    [self queueKey:'Z' modifiers:0];
 }
 
-- (void)handleSwipeUp:(UISwipeGestureRecognizer *)gesture {
-    [self setKeyboardVisible:YES animated:YES];
+- (void)handleTwoFingerTap:(UITapGestureRecognizer *)gesture {
+    if (gesture.state != UIGestureRecognizerStateEnded) return;
+    [self queueKey:27 modifiers:0];
 }
 
-- (void)handleSwipeDown:(UISwipeGestureRecognizer *)gesture {
-    [self setKeyboardVisible:NO animated:YES];
+- (void)handleTwoFingerSwipeDown:(UISwipeGestureRecognizer *)gesture {
+    if (gesture.state != UIGestureRecognizerStateRecognized) return;
+    if (self.keyboardVisible) {
+        [self setKeyboardVisible:NO animated:YES];
+    } else {
+        // Pick up
+        [self queueKey:'g' modifiers:0];
+    }
+}
+
+- (void)handleTwoFingerSwipeUp:(UISwipeGestureRecognizer *)gesture {
+    if (gesture.state != UIGestureRecognizerStateRecognized) return;
+    if (!self.keyboardVisible) {
+        [self setKeyboardVisible:YES animated:YES];
+    }
+}
+
+static inline unichar sil_ctrl(unichar c) {
+    return (unichar)(c & 0x1F);
+}
+
+- (unichar)directionKeyForVector:(CGPoint)v {
+    const CGFloat minDistance = 24.0;
+    CGFloat dx = v.x;
+    CGFloat dy = v.y;
+    if (fabs(dx) < minDistance && fabs(dy) < minDistance) return 0;
+
+    CGFloat adx = fabs(dx);
+    CGFloat ady = fabs(dy);
+
+    // Note: iOS y increases downward.
+    BOOL up = (dy < 0);
+    BOOL right = (dx > 0);
+
+    if (adx > (ady * 2.0)) {
+        return right ? '6' : '4';
+    }
+    if (ady > (adx * 2.0)) {
+        return up ? '8' : '2';
+    }
+
+    if (up && right) return '9';
+    if (up && !right) return '7';
+    if (!up && right) return '3';
+    return '1';
+}
+
+- (void)handleMovementPan:(UIPanGestureRecognizer *)gesture {
+    if (_touchMode == SilTouchModeDisabled) return;
+
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        CGPoint translation = [gesture translationInView:self.view];
+        CGPoint velocity = [gesture velocityInView:self.view];
+
+        unichar dirKey = [self directionKeyForVector:translation];
+        if (!dirKey) return;
+
+        CGFloat speed = hypot(velocity.x, velocity.y);
+        BOOL isFlick = (speed > 900.0);
+
+        if (isFlick) {
+            // Begin running, then provide direction.
+            [self queueKey:'.' modifiers:0];
+            [self queueKey:dirKey modifiers:0];
+        } else {
+            [self queueKey:dirKey modifiers:0];
+        }
+    }
+}
+
+- (void)handleLeftEdge:(UIScreenEdgePanGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateRecognized || gesture.state == UIGestureRecognizerStateEnded) {
+        // Prior messages (^p)
+        [self queueKey:sil_ctrl('P') modifiers:0];
+    }
+}
+
+- (void)handleRightEdge:(UIScreenEdgePanGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateRecognized || gesture.state == UIGestureRecognizerStateEnded) {
+        // Help
+        [self queueKey:'?' modifiers:0];
+    }
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture {
+    CGPoint point = [gesture locationInView:self.view];
+
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        CGPoint point = [gesture locationInView:_terminalView];
-        
-        // Convert to terminal coordinates and trigger look command
-        int col, row;
-        if ([_terminalView terminalCoordinatesForPoint:point col:&col row:&row]) {
-            [self queueKey:'l' modifiers:0]; // Look command
-        }
+        _longPressDidSendAlter = NO;
+        _longPressStartPoint = point;
+        return;
     }
+
+    if (gesture.state == UIGestureRecognizerStateChanged && !_longPressDidSendAlter) {
+        CGPoint delta = CGPointMake(point.x - _longPressStartPoint.x, point.y - _longPressStartPoint.y);
+        unichar dirKey = [self directionKeyForVector:delta];
+        if (dirKey) {
+            // Alter ("/") then direction.
+            [self queueKey:'/' modifiers:0];
+            [self queueKey:dirKey modifiers:0];
+            _longPressDidSendAlter = YES;
+        }
+        return;
+    }
+
+    if ((gesture.state == UIGestureRecognizerStateEnded || gesture.state == UIGestureRecognizerStateCancelled) && !_longPressDidSendAlter) {
+        // Long press without a direction: look
+        [self queueKey:'l' modifiers:0];
+    }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    UIView *touched = touch.view;
+    if (!touched) return YES;
+
+    // Don’t treat touches on the keyboard UI or KB button as game gestures.
+    if (_keyboardView && [touched isDescendantOfView:_keyboardView]) return NO;
+    if (_keyboardToggleButton && (touched == _keyboardToggleButton || [touched isDescendantOfView:_keyboardToggleButton])) return NO;
+
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    // Allow pinch-zoom and two-finger pan (scroll view) to work alongside our recognizers.
+    return YES;
 }
 
 #pragma mark - Keyboard Management
@@ -383,13 +543,14 @@ static const unichar kMovementKeyMap[9] = {
 }
 
 - (void)setKeyboardVisible:(BOOL)show animated:(BOOL)animated {
-    // Keep the toggle button out of the way when the keyboard is visible.
-    _keyboardToggleButton.hidden = show;
-
     // When hidden, collapse keyboard height and let the scroll view use the full screen.
     _keyboardBottomConstraint.active = show;
     _noKeyboardConstraint.active = !show;
     _keyboardHeightConstraint.constant = show ? 220 : 0;
+
+    // Keep KB button visible and move it above the keyboard when needed.
+    _keyboardToggleBottomToSafeConstraint.active = !show;
+    _keyboardToggleBottomToKeyboardConstraint.active = show;
 
     if (show) {
         [_keyboardView showAnimated:animated];
